@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login FastAPI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <button onclick="login()">Logar</button>
+
+        <table id="resultTable" style="display:none;">
+            <tr><th>Campo</th><th>Valor</th></tr>
+            <tr><td>Username</td><td id="username"></td></tr>
+            <tr><td>Email</td><td id="email"></td></tr>
+            <tr><td>Ping</td><td id="ping"></td></tr>
+        </table>
+    </div>
+
+    <script>
+        async function login() {
+            const response = await fetch("/auth/me", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer testtoken"
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById("username").textContent = data.user.username;
+                document.getElementById("email").textContent = data.user.email;
+                document.getElementById("ping").textContent = data.ping;
+                document.getElementById("resultTable").style.display = "table";
+            } else {
+                alert("Erro ao autenticar");
+            }
+        }
+    </script>
+</body>
+</html>
